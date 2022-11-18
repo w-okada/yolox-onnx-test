@@ -1,0 +1,1 @@
+PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python PYTHONPATH=. python3 tools/export_onnx.py -n yolox-nano -c yolox_nano.pth --output-name /work/yolox_nano.onnx

@@ -1,0 +1,32 @@
+{
+    "name": "yolox-onnx-test",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "build:docker": "DOCKER_BUILDKIT=1 docker build -f docker/Dockerfile -t yolox-onnx-test docker/",
+        "export:model": "docker run -ti -v `pwd`/models:/work yolox-onnx-test",
+        "build:web": "webpack",
+        "watch": "webpack-dev-server  --config webpack.config.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/w-okada/yolox-onnx-test.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/w-okada/yolox-onnx-test/issues"
+    },
+    "homepage": "https://github.com/w-okada/yolox-onnx-test#readme",
+    "dependencies": {
+        "onnxruntime-web": "^1.13.1"
+    },
+    "devDependencies": {
+        "copy-webpack-plugin": "^11.0.0",
+        "webpack": "^5.75.0",
+        "webpack-cli": "^5.0.0",
+        "webpack-dev-server": "^4.11.1"
+    }
+}
