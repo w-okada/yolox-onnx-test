@@ -8,6 +8,7 @@
         "export:model": "docker run -ti -v `pwd`/models:/work yolox-onnx-test",
         "build:web": "webpack",
         "watch": "webpack-dev-server  --config webpack.config.js",
+        "start:python": "docker run -ti --entrypoint=\"\" -v `pwd`/models:/work yolox-onnx-test python3 onnx_test.py",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "repository": {

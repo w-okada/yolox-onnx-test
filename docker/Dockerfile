@@ -25,5 +25,6 @@ WORKDIR /YOLOX
 
 RUN wget https://github.com/Megvii-BaseDetection/YOLOX/releases/download/0.1.1rc0/yolox_nano.pth
 COPY export_onnx.sh /YOLOX
+COPY onnx_test.py /YOLOX
 
 ENTRYPOINT ["/bin/bash", "export_onnx.sh"]
