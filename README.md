@@ -3,13 +3,14 @@ YOLOX-ONNX-TEST
 This repository is intended only to evaluate the performance of the yolox onnx model. Only dummy data is used for inference.
 
 
-1. onnx runtime web
-2. python onnx (TBD)
+1. onnx runtime web (wasm)
+2. python onnx (cpu)
 
 # Prerequisite
 This repository use docker.
 
-# onnx runtime sample
+# Experiment
+## onnx runtime web sample (wasm)
 This code is used.
 ```js
 const start = performance.now();
@@ -27,7 +28,7 @@ document.write(`fin. Avr. ${((end - start) / 100).toFixed(2)}msec`);
 ```
 Output is "`fin. Avr. 67.92msec`" on "Intel(R) Core(TM) i9-9900KF CPU @ 3.60GHz"
 
-# python onnx
+## python onnx (cpu)
 This code is used.
 ```py
 import onnxruntime
@@ -47,6 +48,18 @@ elapsed_time = time.time() - start_time
 print('fin. avr time:', (elapsed_time / 100) * 1000, "msec")
 ```
 Output is "`fin. avr time: 8.36 msec`" on "Intel(R) Core(TM) i9-9900KF CPU @ 3.60GHz"
+
+## Result
+
+Python onnx is faster than onnx runtime web 8 times.
+
+| #   | onnx runtime web sample (wasm) | python onnx (cpu) |
+| --- | ------------------------------ | ----------------- |
+| Avr | 67.92msec                      | 8.36msec          |
+
+
+
+
 
 
 # Operations
