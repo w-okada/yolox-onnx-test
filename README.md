@@ -1,32 +1,17 @@
 YOLOX-ONNX-TEST
 ----
-This repository is intended only to evaluate the performance of the yolox onnx model. Only dummy data is used for inference.
+This repository is intended only to evaluate the performance of the yolox onnx model. 
 
+We evaluated from two perspectives.
 
-1. onnx runtime web (wasm)
-2. python onnx (cpu)
+1. Python vs Wasm
+2. Wasm vs TFJS on Browser 
 
 # Prerequisite
 This repository use docker.
 
-# Experiment
-## onnx runtime web sample (wasm)
-This code is used.
-```js
-const start = performance.now();
-let results = "";
-const im = Float32Array.from(Array(1 * 3 * 416 * 416).fill(0));
-const tensorIm = new ort.Tensor("float32", im, [1, 3, 416, 416]);
-const feeds = { images: tensorIm };
-for (let i = 0; i < 100; i++) {
-    results = await session.run(feeds);
-}
-const end = performance.now();
-
-console.log(results);
-document.write(`fin. Avr. ${((end - start) / 100).toFixed(2)}msec`);
-```
-Output is "`fin. Avr. 67.92msec`" on "Intel(R) Core(TM) i9-9900KF CPU @ 3.60GHz"
+# Experiment 1
+In this experiment, we used dummy data. Below are the condition and the results of the experiment.
 
 ## python onnx (cpu)
 This code is used.
@@ -42,12 +27,31 @@ onnx_session = onnxruntime.InferenceSession(
         )
 dummy = np.zeros((1,3,416,416)).astype(np.float32)
 start_time = time.time()
-for i in range(100):
-    results = onnx_session.run(None,{"images": dummy},)
+for i in range(10):
+    results = onnx_session.run(None, {"images": dummy},)
 elapsed_time = time.time() - start_time
-print('fin. avr time:', (elapsed_time / 100) * 1000, "msec")
+print(size, 'fp32 fin. avr time:', (elapsed_time / 10) * 1000, "msec")
 ```
 Output is "`fin. avr time: 8.36 msec`" on "Intel(R) Core(TM) i9-9900KF CPU @ 3.60GHz"
+
+## onnx runtime web sample (wasm)
+This code is used.
+```js
+const start = performance.now();
+let results = "";
+const im = Float32Array.from(Array(1 * 3 * 416 * 416).fill(0));
+const tensorIm = new ort.Tensor("float32", im, [1, 3, 416, 416]);
+const feeds = { images: tensorIm };
+for (let i = 0; i < 10; i++) {
+    results = await session.run(feeds);
+}
+const end = performance.now();
+
+console.log(results);
+document.write(`fin. Avr. ${((end - start) / 10).toFixed(2)}msec`);
+```
+Output is "`fin. Avr. 67.92msec`" on "Intel(R) Core(TM) i9-9900KF CPU @ 3.60GHz"
+
 
 ## Result
 
@@ -57,10 +61,30 @@ Python onnx is faster than onnx runtime web 8 times.
 | --- | ------------------------------ | ----------------- |
 | Avr | 67.92msec                      | 8.36msec          |
 
+# Experiment 2
+ONNX runtime web with WEBGL does not seem to support float16 and int64.
+[issue](https://github.com/microsoft/onnxruntime/issues/9724)
+
+So, I convert onnx to tfjs(Tensorflowjs) and test it.
+
+Below are the condition and the results of the experiment.
+
+## ONNX runtime web (wasm)
+
+![image](https://user-images.githubusercontent.com/48346627/204077770-4bf0f56e-6d2e-491c-85fa-a1ec0e1b1240.png)
+
+All(include pre-process and post-process): about 75ms
+
+Inference only: about 65ms
 
 
+## Tensorflowjs
 
+![image](https://user-images.githubusercontent.com/48346627/204077788-db62abeb-2877-4351-8d89-5ea5e1755b8a.png)
 
+All(include pre-process and post-process): about 17ms
+
+Inference only: about 11ms
 
 # Operations
 You can reproduce the experiment according to the following way.
@@ -89,6 +113,9 @@ Access to the url shown in terminal and wait for a while. Then you can see the o
 $ npm run start:python
 ```
 Wait for a while. Then you can see the output on the termianl.
+
+## Web.
+Access [here]()
 
 # Reference
 1. https://github.com/Megvii-BaseDetection/YOLOX
