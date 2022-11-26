@@ -77,6 +77,7 @@ All(include pre-process and post-process): about 75ms
 
 Inference only: about 65ms
 
+on "Intel(R) Core(TM) i9-9900KF CPU @ 3.60GHz"
 
 ## Tensorflowjs
 
@@ -85,6 +86,8 @@ Inference only: about 65ms
 All(include pre-process and post-process): about 17ms
 
 Inference only: about 11ms
+
+on "Intel(R) Core(TM) i9-9900KF CPU @ 3.60GHz" and "NVIDIA GeForce RTX 2080 Ti"
 
 # Operations
 You can reproduce the experiment according to the following way.
@@ -115,7 +118,7 @@ $ npm run start:python
 Wait for a while. Then you can see the output on the termianl.
 
 ## Web.
-Access [here]()
+Access [here](https://w-okada.github.io/yolox-onnx-test/)
 
 # Reference
 1. https://github.com/Megvii-BaseDetection/YOLOX
